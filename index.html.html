@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>复利计算器 - 智造小铺工作室</title>
+    <style>
+        body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; background-color: #f0f2f5; }
+        .card { background: white; padding: 2.5rem; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); width: 100%; max-width: 400px; position: relative; }
+        h2 { color: #1a1a1a; text-align: center; margin-top: 0; margin-bottom: 25px; font-weight: 600; }
+        
+        .input-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-size: 14px; color: #555; }
+        input { width: 100%; padding: 12px; border: 1.5px solid #eee; border-radius: 8px; box-sizing: border-box; font-size: 16px; outline: none; transition: border-color 0.3s; }
+        input:focus { border-color: #3498db; }
+        
+        button { width: 100%; padding: 14px; background: #3498db; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: bold; margin-top: 10px; transition: 0.3s; box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3); }
+        button:hover { background: #2980b9; transform: translateY(-1px); }
+        
+        #result { margin-top: 25px; padding: 20px; background: #f8f9fa; border-left: 4px solid #3498db; border-radius: 6px; display: none; animation: fadeIn 0.5s; }
+        .res-label { font-size: 14px; color: #7f8c8d; margin-bottom: 4px; }
+        .res-val { font-weight: bold; color: #2c3e50; font-size: 1.4rem; }
+        
+        /* 品牌标识样式 */
+        .footer-credit { text-align: center; margin-top: 30px; font-size: 13px; color: #bdc3c7; border-top: 1px solid #f0f0f0; padding-top: 15px; }
+        .footer-credit strong { color: #95a5a6; font-weight: 500; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>复利计算器</h2>
+    
+    <div class="input-group">
+        <label>初始本金 (元)</label>
+        <input type="number" id="principal" placeholder="请输入投资金额">
+    </div>
+    
+    <div class="input-group">
+        <label>年利率 (%)</label>
+        <input type="number" id="rate" placeholder="例如: 5">
+    </div>
+    
+    <div class="input-group">
+        <label>投资年限 (年)</label>
+        <input type="number" id="years" placeholder="例如: 10">
+    </div>
+
+    <button onclick="calculate()">立即计算增长</button>
+
+    <div id="result">
+        <div class="res-label">最终到期本息：</div>
+        <div id="total" class="res-val"></div>
+        <div style="margin-top: 12px;" class="res-label">纯利息收入：<span id="interest" style="color:#e74c3c; font-weight:bold;"></span></div>
+    </div>
+
+    <div class="footer-credit">
+        此工具由 <strong>智造小铺工作室</strong> 提供
+    </div>
+</div>
+
+<script>
+function calculate() {
+    const P = parseFloat(document.getElementById('principal').value);
+    const r = parseFloat(document.getElementById('rate').value) / 100;
+    const t = parseFloat(document.getElementById('years').value);
+
+    if (!P || !r || !t) {
+        alert("请完整填写所有信息哦！");
+        return;
+    }
+
+    // 复利计算公式
+    const A = P * Math.pow((1 + r), t);
+    const totalInterest = A - P;
+
+    const formatter = new Intl.NumberFormat('zh-CN', {
+        style: 'currency',
+        currency: 'CNY',
+    });
+
+    document.getElementById('total').innerText = formatter.format(A);
+    document.getElementById('interest').innerText = formatter.format(totalInterest);
+    document.getElementById('result').style.display = 'block';
+}
+</script>
+
+</body>
+</html>
